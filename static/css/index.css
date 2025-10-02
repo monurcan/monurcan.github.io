@@ -1,6 +1,3 @@
-
-
-
 /* Modern color palette and typography */
 :root {
     --primary-color: #2563eb;
@@ -25,7 +22,8 @@ body {
 }
 
 /* Performance optimizations */
-img, video {
+img,
+video {
     max-width: 100%;
     height: auto;
 }
@@ -124,10 +122,28 @@ img, video {
     background: linear-gradient(90deg, transparent, var(--border-light), transparent);
 }
 
-.footer a {
-    font-size: 25px;
-    color: #000;
+
+.footer {
+    border-top: 1px solid var(--border-color);
+    padding: 3rem 1.5rem;
 }
+
+.footer .content {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
 
 /* Publication sections */
 .selected-publications {
@@ -301,7 +317,7 @@ img, video {
 }
 
 .publication-authors a {
-   /* color: hsl(204, 86%, 53%) !important; */
+    /* color: hsl(204, 86%, 53%) !important; */
     color: var(--text-secondary);
 }
 
@@ -318,7 +334,8 @@ img, video {
     display: none;
 }
 
-.publication-mousecell img, .publication-mousecell video {
+.publication-mousecell img,
+.publication-mousecell video {
     border-radius: 50%;
     width: 100%;
     height: 100%;
@@ -389,31 +406,33 @@ img, video {
 
 /* Mobile responsive styles */
 @media screen and (max-width: 768px) {
+
     /* Force Bulma columns to stack vertically */
     .columns.is-vcentered {
         align-items: stretch !important;
     }
+
     .hero {
         padding: 2rem 0;
     }
-    
+
     .hero .title {
         font-size: 2rem;
     }
-    
+
     .hero .content p {
         font-size: 1rem;
     }
-    
+
     /* Center email display on mobile */
     .contact-info {
         text-align: center;
     }
-    
+
     .hero .buttons {
         justify-content: center;
     }
-    
+
     /* Ensure all buttons have uniform sizing on mobile */
     .hero .buttons .button {
         width: 100% !important;
@@ -424,7 +443,7 @@ img, video {
         box-sizing: border-box;
         text-align: center;
     }
-    
+
     /* Ensure buttons container stacks vertically */
     .hero .buttons {
         display: flex !important;
@@ -432,35 +451,35 @@ img, video {
         justify-content: center;
         align-items: stretch;
     }
-    
+
     /* Force equal button content width */
     .hero .buttons .button span:not(.icon) {
         white-space: nowrap;
     }
-    
+
     .email-display {
         padding: 0.6rem 1rem;
         gap: 0.5rem;
     }
-    
+
     .obfuscated-email {
         font-size: 0.9rem;
     }
-    
+
     .section-title {
         font-size: 1.75rem;
     }
-    
+
     .publication-block {
         padding: 1.5rem;
         margin: 0 1.5rem 2rem 1.5rem !important;
     }
-    
+
     .selected-publications .publication-block.columns {
         display: block !important;
         flex-direction: column !important;
     }
-    
+
     .selected-publications .publication-block .column,
     .selected-publications .publication-block .column.is-4,
     .selected-publications .publication-block .column.is-8 {
@@ -471,54 +490,55 @@ img, video {
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
-    
+
     .publication-block .column.is-4 {
         margin-bottom: 1.5rem;
     }
-    
+
     /* Override Bulma's column behavior on mobile */
     .publication-block .columns {
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
-    
+
     .publication-links .button {
         font-size: 0.8rem;
         padding: 0.4rem 0.8rem;
     }
-    
+
     .publication-authors {
         font-size: 0.9rem;
     }
-    
+
     .publication-title {
         font-size: 1.1rem !important;
     }
 }
 
 @media screen and (max-width: 480px) {
+
     /* Force Bulma columns to stack vertically */
     .columns.is-vcentered {
         align-items: stretch !important;
     }
-    
+
     .hero {
         padding: 1.5rem 0;
     }
-    
+
     .hero .title {
         font-size: 1.75rem;
     }
-    
+
     .hero .content p {
         font-size: 0.95rem;
     }
-    
+
     /* Center email display on small mobile */
     .contact-info {
         text-align: center;
     }
-    
+
     .hero .buttons .button {
         width: 100%;
         justify-content: center;
@@ -526,30 +546,30 @@ img, video {
         font-size: 0.875rem !important;
         padding: 0.75rem 1rem !important;
     }
-    
+
     .email-display {
         padding: 0.5rem 0.8rem;
         gap: 0.4rem;
     }
-    
+
     .obfuscated-email {
         font-size: 0.85rem;
     }
-    
+
     .section-title {
         font-size: 1.5rem;
     }
-    
+
     .publication-block {
         padding: 1rem;
         margin: 0 1rem 1.5rem 1rem !important;
     }
-    
+
     .selected-publications .publication-block.columns {
         display: block !important;
         flex-direction: column !important;
     }
-    
+
     .selected-publications .publication-block .column,
     .selected-publications .publication-block .column.is-4,
     .selected-publications .publication-block .column.is-8 {
@@ -559,26 +579,26 @@ img, video {
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
-    
+
     /* Override Bulma's column behavior on mobile */
     .publication-block .columns {
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
-    
+
     .publication-links {
         gap: 0.25rem;
     }
-    
+
     .publication-links .button {
         font-size: 0.75rem;
         padding: 0.35rem 0.7rem;
     }
-    
+
     .publication-authors {
         font-size: 0.85rem;
     }
-    
+
     .publication-title {
         font-size: 1rem !important;
     }
