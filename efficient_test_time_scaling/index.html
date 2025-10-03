@@ -129,23 +129,31 @@
   {
     "@context": "https://schema.org",
     "@type": "ScholarlyArticle",
-    "headline": "PAPER_TITLE",
-    "description": "BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS",
+    "headline": "Efficient Test-Time Scaling for Small Vision-Language Models",
+    "description": "We propose two efficient and effective methods improving multimodal small language models at test-time: TTAug (input augmentation + token-level aggregation) and TTAdapt (parameter adaptation via pseudolabels).",
     "author": [
       {
         "@type": "Person",
-        "name": "FIRST_AUTHOR_NAME",
+        "name": "Mehmet Onurcan Kaya",
         "affiliation": {
           "@type": "Organization",
-          "name": "INSTITUTION_NAME"
+          "name": "Technical University of Denmark"
         }
       },
       {
         "@type": "Person",
-        "name": "SECOND_AUTHOR_NAME",
+        "name": "Desmond Elliott",
         "affiliation": {
           "@type": "Organization",
-          "name": "INSTITUTION_NAME"
+          "name": "University of Copenhagen"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Dim P. Papadopoulos",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Technical University of Denmark"
         }
       }
     ],
@@ -154,25 +162,51 @@
       "@type": "Organization",
       "name": "CONFERENCE_OR_JOURNAL_NAME"
     },
-    "url": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE",
-    "image": "https://YOUR_DOMAIN.com/static/images/social_preview.png",
-    "keywords": ["KEYWORD1", "KEYWORD2", "KEYWORD3", "machine learning", "computer vision"],
-    "abstract": "FULL_ABSTRACT_TEXT_HERE",
+    "url": "https://monurcan.github.io/efficient_test_time_scaling/",
+    "image": "https://monurcan.github.io/efficient_test_time_scaling/static/images/social_preview.png",
+    "keywords": ["vlm", "test-time augmentation", "test-time adaptation", "test-time training", "multimodal", "llm", "large language models", "machine learning", "computer vision"],
+    "abstract": "Small Vision-Language Models (VLMs) provide a computationally efficient alternative
+                to larger models, at the cost of weaker generalization abilities and
+                downstream task performance. These shortcomings could be addressed by test-time
+                scaling techniques, but existing methods are typically computationally
+                demanding, contradicting the resource-efficient design goals of small models.
+                To address these limitations, we propose two novel and efficient test-time scaling
+                strategies that leverage the model-internal features rather than external supervision:
+                (i) Test-Time Augmentation (TTAug), which generates multiple augmented inputs
+                and aggregates outputs at the token level without parameter updates, and (ii)
+                Test-Time Adaptation (TTAdapt), which adapts model parameters during inference
+                using consensus-based pseudolabels from TTAug. Through extensive experiments
+                across nine benchmarks, we demonstrate consistent performance improvements while
+                maintaining computational efficiency suitable for resource-constrained environments.
+                The generality of our approach is demonstrated both within models at
+                different scales and across different VLMs without additional tuning.",
     "citation": "BIBTEX_CITATION_HERE",
     "isAccessibleForFree": true,
     "license": "https://creativecommons.org/licenses/by/4.0/",
     "mainEntity": {
       "@type": "WebPage",
-      "@id": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE"
+      "@id": "https://monurcan.github.io/efficient_test_time_scaling/"
     },
     "about": [
       {
         "@type": "Thing",
-        "name": "RESEARCH_AREA_1"
+        "name": "Vision-Language Models"
       },
       {
-        "@type": "Thing", 
-        "name": "RESEARCH_AREA_2"
+        "@type": "Thing",
+        "name": "Test-Time Adaptation"
+      },
+      {
+        "@type": "Thing",
+        "name": "Test-Time Augmentation"
+      },
+      {
+        "@type": "Thing",
+        "name": "Multimodal Learning"
+      },
+      {
+        "@type": "Thing",
+        "name": "Machine Learning"
       }
     ]
   }
@@ -187,8 +221,8 @@
     "url": "https://YOUR_INSTITUTION_WEBSITE.com",
     "logo": "https://YOUR_DOMAIN.com/static/images/favicon.ico",
     "sameAs": [
-      "https://twitter.com/YOUR_TWITTER_HANDLE",
-      "https://github.com/YOUR_GITHUB_USERNAME"
+      "https://twitter.com/monurcan55",
+      "https://github.com/monurcan"
     ]
   }
   </script>
@@ -302,7 +336,7 @@
 
                   <!-- TODO: Replace with your GitHub repository URL -->
                   <span class="link-block">
-                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
+                    <a href="https://github.com/monurcan/efficient_test_time_scaling" target="_blank"
                       class="external-link button is-normal is-rounded is-dark">
                       <span class="icon">
                         <i class="fab fa-github"></i>
