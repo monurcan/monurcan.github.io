@@ -676,8 +676,7 @@
                           .then(response => response.text())
                           .then(text => {
                             const promptsDiv = document.getElementById('augmented-prompts');
-                            const prompts = text.split('******').filter(p => p.trim());
-                            promptsDiv.innerHTML = prompts
+                            promptsDiv.innerHTML = text.split('******')
                               .map(prompt => {
                                 return `<p>${prompt}</p><hr>`;
                               })
