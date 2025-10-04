@@ -676,12 +676,10 @@
                           .then(response => response.text())
                           .then(text => {
                             const promptsDiv = document.getElementById('augmented-prompts');
-                            const prompts = text.split('\n\n').filter(p => p.trim());
+                            const prompts = text.split('******').filter(p => p.trim());
                             promptsDiv.innerHTML = prompts
                               .map(prompt => {
-                                const lines = prompt.split('\n');
-                                const promptHeader = lines[0].split(':')[0] + ':';
-                                return `<p><strong>${promptHeader}</strong> ${lines[1] || ''}</p><hr>`;
+                                return `<p>${prompt}</p><hr>`;
                               })
                               .join('');
                           })
