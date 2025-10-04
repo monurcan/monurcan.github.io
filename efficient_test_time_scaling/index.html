@@ -687,7 +687,8 @@
                             const promptsDiv = document.getElementById('augmented-prompts');
                             promptsDiv.innerHTML = text.split('******')
                               .map(prompt => {
-                                const escapedPrompt = escapeHtml(prompt.trim());
+                                const escapedPrompt = escapeHtml(prompt.trim())
+                                  .replace(/\n/g, '<br>'); // Convert newlines to <br> tags
                                 return `<p>${escapedPrompt}</p><hr>`;
                               })
                               .join('');
