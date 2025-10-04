@@ -173,4 +173,3 @@ Prompt 15:
 Select the best answer to the above multiple-choice question based on the image. Respond with only the letter (A, B, C, D, or E) of the correct option. 
 The best answer is:<end_of_utterance>
 Assistant:
-******

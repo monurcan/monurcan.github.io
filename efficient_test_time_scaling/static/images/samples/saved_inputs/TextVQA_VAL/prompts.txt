@@ -189,4 +189,3 @@ Prompt 15:
 Question: which of these books was recently adapted by netflix?
 Answer the question using a single word or phrase.<end_of_utterance>
 Assistant:
-******

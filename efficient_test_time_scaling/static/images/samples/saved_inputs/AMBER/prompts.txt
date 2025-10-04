@@ -61,4 +61,3 @@ Assistant:
 Prompt 15:
 <|im_start|>User:<image>Does the pigeon stand in this image?<end_of_utterance>
 Assistant:
-******

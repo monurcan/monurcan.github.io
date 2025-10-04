@@ -253,4 +253,3 @@ Prompt 15:
 Question: Which country had the most visitors to Italy in 2018?
 Answer the question using a single word or phrase.<end_of_utterance>
 Assistant:
-******

@@ -61,4 +61,3 @@ Assistant:
 Prompt 15:
 <|im_start|>User:<image>Please describe this image in general. Directly provide the description, do not include prefix like "This image depicts".<end_of_utterance>
 Assistant:
-******

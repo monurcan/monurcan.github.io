@@ -77,4 +77,3 @@ Prompt 15:
 <|im_start|>User:<image>What's in front of the window?
 Answer the question using a single word or phrase.<end_of_utterance>
 Assistant:
-******

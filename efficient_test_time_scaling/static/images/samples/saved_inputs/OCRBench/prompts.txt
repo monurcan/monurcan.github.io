@@ -77,4 +77,3 @@ Prompt 15:
 <|im_start|>User:<image>what is the total amount of this receipt? Answer this question using the text in the image directly.
 Give a very brief answer.<end_of_utterance>
 Assistant:
-******

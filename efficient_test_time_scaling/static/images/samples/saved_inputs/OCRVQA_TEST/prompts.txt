@@ -93,4 +93,3 @@ Prompt 15:
 Answer the question using a single word or phrase.
 Give a very brief answer.<end_of_utterance>
 Assistant:
-******

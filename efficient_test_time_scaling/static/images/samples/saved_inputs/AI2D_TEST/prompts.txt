@@ -141,4 +141,3 @@ C. king brown snake would increast
 D. salt bush would decrease
 Answer with the letter.<end_of_utterance>
 Assistant: Answer:
-******
