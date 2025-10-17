@@ -468,7 +468,8 @@
                 <div class="level-set has-text-justified">
                   <p>
                     Our methods are significantly more efficient than existing test-time scaling approaches that rely on
-                    parallel sampling, due to two key design choices: <strong>token-level aggregation</strong> and
+                    repeated/parallel sampling, due to two key design choices: <strong>token-level aggregation</strong>
+                    and
                     <strong>augmentation-based diversity inducement</strong>.
                     Existing test-time scaling methods employ answer-level aggregation with temperature
                     sampling for diversity inducement:
@@ -508,30 +509,43 @@
                   </p>
                 </div>
               </div>
+              <hr>
               <div class="columns">
-                <div class="column">
+                <div class="column is-half has-text-justified">
                   <p>
+                    <strong>Key insight #1:</strong>
                     <strong>Augmentation-based diversity beats temperature sampling.</strong><br>
-                    Our augmentation strategy induces better diversity than temperature-based parallel sampling.
+                    Generating diverse, high-quality candidate answers is critical for TTS. We compare two approaches
+                    for inducing diversity.<br>
+                    Temperature Sampling introduces diversity by sampling from a softened probability distribution.<br>
+                    Input Perturbations applies classic semantic-preserving augmentations to inputs and then decodes
+                    greedily.<br>
+                    To evaluate which method is more effective, we consider two test-time scaling strategies:
+                    Self-Consistency and Self-Selector.
                   </p>
-                  <br>
-                  <img src="static/images/diversityinducement.png" alt="Diversity Inducement"
-                    class="blend-img-background center-image" style="width: 85%; height: auto;">
                 </div>
                 <div class="column">
+                  <img src="static/images/diversityinducementgraph.png" alt="Diversity Inducement"
+                    class="blend-img-background center-image" style="width: 75%; height: auto;">
+                </div>
+              </div>
+              <hr>
+              <div class="columns">
+                <div class="column is-half has-text-justified">
                   <p>
+                    <strong>Key insight #2:</strong>
+                    <br>
                     <strong>Token-level aggregation is superior to answer-level.</strong><br>
                     By aggregating at the token level rather than final answers, we achieve better performance.
+                    Token-level aggregation captures fine-grained local confidence signals.
                   </p>
-                  <br>
-                  <img src="static/images/aggregationlevel.png" alt="Token-Level Aggregation"
-                    class="blend-img-background center-image" style="width: 85%; height: auto;">
+                </div>
+                <div class="column-1">
+                  <img src="static/images/aggregationlevelgraph.png" alt="Token-Level Aggregation"
+                    class="blend-img-background center-image" style="width: 90%; height: auto;">
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <section class="hero is-small">
@@ -592,9 +606,13 @@
               <p>We also provide comprehensive ablation studies exploring optimal aggregation
                 strategies, layer selection for aggregation, augmentation techniques, adaptation objectives, and the
                 balance between computational efficiency and performance gains.</p>
+              <br>
+              <img src="static/images/analyses.png" alt="Comprehensive analyses"
+                class="blend-img-background center-image" style="width: 75%; height: auto;">
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
 
