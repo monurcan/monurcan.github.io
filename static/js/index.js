@@ -51,4 +51,38 @@ $(document).ready(function () {
 
     trigger.addEventListener('mouseleave', reset);
   });
+
+  document.querySelectorAll('.hover-loop-video').forEach(function (video) {
+    var trigger = video.closest('.publication-block') || video;
+    var EPSILON = 0.05; // seeking to the exact duration snaps back to frame 0 in some browsers
+
+    function lastFrameTime() {
+      return Math.max(0, video.duration - EPSILON);
+    }
+
+    function goToLastFrame() {
+      video.pause();
+      if (video.readyState >= 2) {
+        video.currentTime = lastFrameTime();
+      } else {
+        video.addEventListener('loadeddata', function once() {
+          video.currentTime = lastFrameTime();
+          video.removeEventListener('loadeddata', once);
+        });
+      }
+    }
+    goToLastFrame();
+
+    trigger.addEventListener('mouseenter', function () {
+      video.currentTime = 0;
+      video.loop = true;
+      video.play();
+    });
+
+    trigger.addEventListener('mouseleave', function () {
+      video.loop = false;
+      video.pause();
+      video.currentTime = lastFrameTime();
+    });
+  });
 })
