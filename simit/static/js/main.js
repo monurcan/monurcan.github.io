@@ -48,9 +48,6 @@
   }, { rootMargin: '-45% 0px -50% 0px' });
   $$('main section[id]').forEach((s) => secObs.observe(s));
 
-  // placeholder links (paper / arXiv) until the URLs exist
-  $$('a[data-todo]').forEach((a) => a.addEventListener('click', (e) => { if (a.getAttribute('href') === '#') e.preventDefault(); }));
-
   /* ------------------------------------------------------------ teaser video */
   const video = $('#teaser-video');
   const vbtn = $('#video-toggle');
