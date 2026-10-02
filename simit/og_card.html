@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- Source of static/img/og_image.jpg (1200x630 social-media preview card). Render with:
+     firefox --headless --window-size=1200,630 --screenshot og.png "file://$PWD/og_card.html"
+     then convert og.png to static/img/og_image.jpg (see README.md). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SIMIT social card</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+  :root { --red:#F94144; --orange:#F3722C; --amber:#F8961E; --green:#90BE6D; --blue:#577590; --ink:#1d1d1f; --line:#7a7a7a; }
+  html, body { margin: 0; background: #fff; }
+  body { width: 1200px; height: 630px; overflow: hidden; font-family: 'Fira Sans', sans-serif; color: var(--ink); position: relative; }
+  .left { position: absolute; left: 64px; top: 58px; width: 620px; }
+  .mark { font-size: 112px; font-weight: 800; line-height: 1; letter-spacing: 2px; }
+  .title { font-size: 33px; font-weight: 600; line-height: 1.25; margin-top: 18px; }
+  .title u { text-decoration: none; background-repeat: no-repeat; background-size: 100% 4px; background-position: 0 100%; }
+  .line { font-size: 23px; line-height: 1.45; color: #45464b; margin-top: 22px; }
+  .line b { color: var(--ink); font-weight: 600; }
+  .chips { display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
+  .chip { font-size: 19px; font-weight: 600; padding: 7px 16px; border-radius: 999px; background: #f4f4f5; }
+  .chip.hot { color: #fff; background: linear-gradient(90deg, var(--orange), #6f9a4f); }
+  .cloud { position: absolute; right: 36px; top: 26px; width: 470px; height: 390px; border-radius: 48% 52% 46% 54% / 55% 50% 50% 45%;
+           border: 5px solid var(--amber); background: radial-gradient(circle at 50% 45%, rgba(249,199,79,.18), rgba(255,255,255,0) 70%); }
+  .card { position: absolute; width: 200px; background: #fff; border: 3px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 26px rgba(0,0,0,.10); }
+  .card img { width: 100%; height: 170px; object-fit: cover; display: block; }
+  .card .t { padding: 9px 12px 11px; font-size: 16px; line-height: 1.3; text-align: center; }
+  .card .a { display: inline-block; margin-top: 6px; font-weight: 600; background: rgba(144,190,109,.35); border: 2px solid var(--green); border-radius: 8px; padding: 1px 8px; color: #3d5a28; }
+  .c1 { right: 270px; top: 70px; transform: rotate(-4deg); }
+  .c2 { right: 60px; top: 90px; transform: rotate(3deg); }
+  .mascot { position: absolute; right: 150px; bottom: 6px; width: 142px; }
+  .bubble { position: absolute; border: 4px solid var(--amber); border-radius: 50%; background: #fff; }
+  .foot { position: absolute; left: 64px; bottom: 40px; font-size: 18px; color: #74757c; }
+</style>
+</head>
+<body>
+  <div class="left">
+    <div class="mark"><span style="color:var(--red)">S</span><span style="color:var(--orange)">I</span><span style="color:var(--amber)">M</span><span style="color:var(--green)">I</span><span style="color:var(--blue)">T</span></div>
+    <div class="title">
+      <u style="background-image:linear-gradient(var(--red),var(--red))">S</u>elf-<u style="background-image:linear-gradient(var(--orange),var(--orange))">I</u>mproving Vision-Language<br>
+      <u style="background-image:linear-gradient(var(--amber),var(--amber))">M</u>odels via <u style="background-image:linear-gradient(var(--green),var(--green))">I</u>magination at <u style="background-image:linear-gradient(var(--blue),var(--blue))">T</u>est-Time
+    </div>
+    <div class="line">A VLM <b>imagines its own practice problems</b>, with the answer first and the image second, and learns from them before it answers.</div>
+    <div class="chips">
+      <span class="chip hot">+7.20% on 17 benchmarks</span>
+      <span class="chip">no labels</span>
+      <span class="chip">no external models</span>
+    </div>
+  </div>
+
+  <div class="cloud"></div>
+  <span class="bubble" style="right:300px;top:420px;width:26px;height:26px"></span>
+  <span class="bubble" style="right:318px;top:455px;width:16px;height:16px"></span>
+  <div class="card c1">
+    <img src="static/img/samples/vizwiz_vqa_val_345_syn2.webp" alt="">
+    <div class="t"><b>Q:</b> Is the cat sitting or lying down?<br><span class="a">A: Sitting</span></div>
+  </div>
+  <div class="card c2">
+    <img src="static/img/samples/nocaps_val_45_syn1.webp" alt="">
+    <div class="t"><b>Q:</b> What is the person holding?<br><span class="a">A: A glass mug filled with milk.</span></div>
+  </div>
+  <img class="mascot" src="static/img/mascots/improved.webp" alt="">
+  <div class="foot">Kaya · Elliott · Papadopoulos &nbsp;·&nbsp; DTU · Pioneer Center for AI · University of Copenhagen</div>
+</body>
+</html>

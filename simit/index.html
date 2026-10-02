@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMIT: Self-Improving VLMs via Imagination at Test-Time</title>
+<meta name="description" content="SIMIT lets a vision-language model imagine its own practice problems (question and answer first, then the image), learn from them, and then answer an unlabeled test query. +7.20% mean relative gain over BAGEL-7B on 17 benchmarks, with no labels and no external models.">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.classList.add('js')</script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="SIMIT: Self-Improving Vision-Language Models via Imagination at Test-Time">
+<meta property="og:description" content="A VLM imagines its own practice problems, answer first and image second, then learns from them before answering. +7.20% over BAGEL-7B on 17 benchmarks. No labels, no external models.">
+<meta property="og:image" content="https://monurcan.github.io/simit/static/img/og_image.jpg">
+<meta property="og:url" content="https://monurcan.github.io/simit/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SIMIT: Self-Improving VLMs via Imagination at Test-Time">
+<meta name="twitter:description" content="A VLM imagines its own practice problems, answer first and image second, then learns from them before answering. No labels, no external models.">
+<meta name="twitter:image" content="https://monurcan.github.io/simit/static/img/og_image.jpg">
+
+<link rel="icon" type="image/png" href="static/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<nav class="topnav" id="topnav" aria-label="Sections">
+  <div class="wrap topnav-in">
+    <a class="mini-mark" href="#top" aria-label="SIMIT, back to top"><span class="c-red">S</span><span class="c-orange">I</span><span class="c-amber">M</span><span class="c-green">I</span><span class="c-blue">T</span></a>
+    <div class="topnav-links">
+      <a href="#idea">Idea</a>
+      <a href="#method">Method</a>
+      <a href="#skills">Skill library</a>
+      <a href="#try">Try it</a>
+      <a href="#results">Results</a>
+      <a href="#explore">Examples</a>
+      <a href="#bibtex">BibTeX</a>
+    </div>
+    <a class="btn btn-dark btn-sm" href="static/pdf/paper.pdf" target="_blank" rel="noopener" data-todo="paper-link">Paper</a>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="wordmark" aria-hidden="true"><span class="c-red">S</span><span class="c-orange">I</span><span class="c-amber">M</span><span class="c-green">I</span><span class="c-blue">T</span></p>
+    <h1 class="title">
+      <span class="sr-only">SIMIT: </span><u class="u-red">S</u>elf-<u class="u-orange">I</u>mproving Vision-Language <br class="br-wide"><u class="u-amber">M</u>odels via <u class="u-green">I</u>magination at <u class="u-blue">T</u>est-Time
+    </h1>
+
+    <p class="authors">
+      <span><a href="https://monurcan.github.io/">Mehmet Onurcan Kaya</a><sup>1,2</sup></span>
+      <span><a href="https://elliottd.github.io/">Desmond Elliott</a><sup>3,2</sup></span>
+      <span><a href="https://dimipapa.github.io/">Dim P. Papadopoulos</a><sup>1,2</sup></span>
+    </p>
+    <p class="affils">
+      <span><sup>1</sup>Technical University of Denmark</span>
+      <span><sup>2</sup>Pioneer Center for AI</span>
+      <span><sup>3</sup>University of Copenhagen</span>
+    </p>
+
+    <div class="links">
+      <!-- TODO: point these at the arXiv abstract / PDF once public -->
+      <a class="btn btn-dark" href="static/pdf/paper.pdf" target="_blank" rel="noopener" data-todo="paper-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 2v6h6M9 13h8M9 17h8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        Paper
+      </a>
+      <a class="btn btn-dark" href="https://huggingface.co/spaces/monurcan/simit" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.2v7.6l6-3.8z" fill="currentColor"/></svg>
+        Demo
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/monurcan/simit_paper" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 00-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 015 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0012 2z" fill="currentColor"/></svg>
+        Code
+      </a>
+      <a class="btn btn-ghost" href="https://pypi.org/project/simit/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M3.5 7.25L12 12l8.5-4.75M12 12v9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        pip library
+      </a>
+      <a class="btn btn-ghost" href="#bibtex">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4H5v16h2M17 4h2v16h-2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 9h6M9 13h6" stroke="currentColor" stroke-width="2"/></svg>
+        BibTeX
+      </a>
+    </div>
+
+    <figure class="teaser">
+      <div class="teaser-frame">
+        <video id="teaser-video" autoplay muted loop playsinline preload="auto" poster="static/img/poster.jpg"
+               aria-label="38-second animated overview of SIMIT">
+          <source src="static/video/simit_teaser.mp4" type="video/mp4">
+        </video>
+        <button class="video-toggle" id="video-toggle" type="button" aria-label="Pause video">
+          <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+    </figure>
+
+    <p class="tldr">
+      <span class="tldr-tag">TL;DR</span>
+      Before answering an unlabeled test question, a vision-language model <strong>imagines similar practice problems</strong>:
+      it writes each question and its <strong>answer first</strong>, then creates an image that fits. It learns from them and then answers.
+      <span class="nowrap">No labels.</span> <span class="nowrap">No external models.</span>
+    </p>
+
+    <div class="stats" role="list">
+      <div class="stat" role="listitem">
+        <div class="stat-v">+7.20%</div>
+        <div class="stat-l">mean relative gain over BAGEL-7B on <b>17 benchmarks</b></div>
+      </div>
+      <div class="stat" role="listitem">
+        <div class="stat-v">+6.98%</div>
+        <div class="stat-l">training-free, with <b>in-context learning</b> only (SIMIT-ICL)</div>
+      </div>
+      <div class="stat" role="listitem">
+        <div class="stat-v">16 / 17</div>
+        <div class="stat-l">benchmarks improved by SIMIT-ICL, and <b>one tie</b></div>
+      </div>
+      <div class="stat" role="listitem">
+        <div class="stat-v">0</div>
+        <div class="stat-l">labels, teacher models or external verifiers</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================ IDEA ============================ -->
+<section class="section" id="idea">
+  <div class="wrap">
+    <p class="kicker">The key idea</p>
+    <h2>Don't learn from your own guesses.<br>Learn from problems you wrote yourself.</h2>
+    <p class="lead">
+      Test-time self-improvement usually learns from the model's <em>own answers</em>, such as majority votes or self-judgments.
+      When the model is wrong, it teaches itself to stay wrong.
+      SIMIT turns this around. The model writes a <em>new</em> question, <strong>decides the answer first</strong>, and only then creates an image that makes the answer true.
+      Solving an unfamiliar question is hard. Writing a practice problem whose answer you already know is much easier.
+    </p>
+
+    <div class="duel" id="duel">
+      <div class="duel-query">
+        <img src="static/img/samples/vizwiz_vqa_val_345_query.webp" alt="A blurry photo of a long-haired brown cat on a person's lap next to a laptop keyboard." width="360" height="480">
+        <div class="duel-query-text">
+          <span class="pill pill-muted">Unlabeled test query · VizWiz-VQA</span>
+          <p class="duel-q"><b>Q:</b> What color is this cat?</p>
+          <div class="zs-line">
+            <img src="static/img/mascots/initial.webp" alt="" class="zs-mascot">
+            <div>
+              <div class="muted small">BAGEL-7B, zero-shot</div>
+              <span class="answer bad">Unanswerable <i class="mark x" aria-label="wrong"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="duel-cols">
+        <article class="duel-col guess">
+          <header>
+            <h3>Learning from its own guesses</h3>
+            <p class="muted">Consensus-based self-training, e.g. TTRL</p>
+          </header>
+          <ol class="flow">
+            <li class="fx" style="--d:.2s">
+              <span class="flow-n">1</span>
+              <div>Sample many answers to the <em>same</em> query
+                <div class="chips" aria-label="illustrative sampled answers">
+                  <span class="chip fx" style="--d:.45s">Unanswerable</span><span class="chip fx" style="--d:.55s">Unanswerable</span><span class="chip fx" style="--d:.65s">Brown</span><span class="chip fx" style="--d:.75s">Unanswerable</span><span class="chip fx" style="--d:.85s">Unanswerable</span><span class="chip fx" style="--d:.95s">Tan</span><span class="chip fx" style="--d:1.05s">Unanswerable</span>
+                </div>
+              </div>
+            </li>
+            <li class="fx" style="--d:1.4s">
+              <span class="flow-n">2</span>
+              <div>The majority vote becomes the pseudo-label
+                <div class="pseudo">&ldquo;Unanswerable&rdquo;</div>
+              </div>
+            </li>
+            <li class="fx" style="--d:2.1s">
+              <span class="flow-n">3</span>
+              <div>Rewarding agreement with it <strong>reinforces the mistake</strong></div>
+            </li>
+          </ol>
+          <p class="duel-foot fx" style="--d:2.6s">
+            <i class="mark x" aria-hidden="true"></i>
+            <span>On VizWiz, &ldquo;unanswerable&rdquo; is TTRL's majority vote in <b>99.2%</b> of training steps.</span>
+          </p>
+          <p class="illus-note">Sampled answers are illustrative.</p>
+        </article>
+
+        <article class="duel-col imagine">
+          <header>
+            <h3>Imagining practice problems</h3>
+            <p class="muted">SIMIT: the same model, no labels</p>
+          </header>
+          <div class="imag-row">
+            <figure class="imag">
+              <div class="imag-qa">
+                <p class="fx" style="--d:.3s"><b>Q:</b> Is the cat sitting or lying down?</p>
+                <p class="imag-a fx" style="--d:.8s"><span>A: Sitting</span></p>
+              </div>
+              <div class="gen fx-gen" style="--d:1.3s">
+                <img src="static/img/samples/vizwiz_vqa_val_345_syn2.webp" alt="Imagined image: a fluffy brown cat sitting on a person's lap in front of a keyboard." width="400" height="400" loading="lazy">
+                <span class="gen-noise"></span>
+                <span class="gen-bar"></span>
+              </div>
+              <figcaption class="verified fx" style="--d:2.5s"><i class="mark ok" aria-hidden="true"></i> verified</figcaption>
+            </figure>
+            <figure class="imag">
+              <div class="imag-qa">
+                <p class="fx" style="--d:.55s"><b>Q:</b> How many legs does the cat have?</p>
+                <p class="imag-a fx" style="--d:1.05s"><span>A: Four</span></p>
+              </div>
+              <div class="gen fx-gen" style="--d:1.6s">
+                <img src="static/img/samples/vizwiz_vqa_val_345_syn1.webp" alt="Imagined image: a fluffy brown cat sitting upright on a person's lap next to a keyboard." width="400" height="400" loading="lazy">
+                <span class="gen-noise"></span>
+                <span class="gen-bar"></span>
+              </div>
+              <figcaption class="verified fx" style="--d:2.7s"><i class="mark ok" aria-hidden="true"></i> verified</figcaption>
+            </figure>
+          </div>
+          <p class="imag-note fx" style="--d:.8s"><span class="hl-a">Answer fixed first</span>, image generated to match it.</p>
+          <p class="duel-foot good fx" style="--d:3.1s">
+            <span>Learn from them in context, then answer:</span>
+            <span class="answer ok">Brown <i class="mark ok" aria-label="correct"></i></span>
+          </p>
+        </article>
+      </div>
+      <button class="replay" type="button" id="duel-replay">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 108-8H8m0 0l3-3M8 4l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Replay
+      </button>
+    </div>
+
+    <blockquote class="insight">
+      A model does not need to solve the test query correctly to write useful practice problems, because it
+      <span class="hl">controls the answers it writes</span>.
+    </blockquote>
+  </div>
+</section>
+
+<!-- ============================ METHOD ============================ -->
+<section class="section section-soft" id="method">
+  <div class="wrap">
+    <p class="kicker">How it works</p>
+    <h2>One model plays every role</h2>
+    <p class="lead">
+      SIMIT runs on a <strong>unified multimodal model</strong> (BAGEL-7B) that can both understand and generate images.
+      No teacher, retriever or verifier is used. The only other components are deterministic renderers, which draw whatever the model specifies.
+    </p>
+
+    <ul class="roles">
+      <li><img src="static/img/mascots/synthesizer.webp" alt="" loading="lazy"><b>Synthesizer</b><span>writes question, answer and image-description triplets</span></li>
+      <li><img src="static/img/mascots/router.webp" alt="" loading="lazy"><b>Router</b><span>decides how each image should be made</span></li>
+      <li><img src="static/img/mascots/artist.webp" alt="" loading="lazy"><b>Artist</b><span>paints natural images natively</span></li>
+      <li><img src="static/img/mascots/architect.webp" alt="" loading="lazy"><b>Architect</b><span>writes specs that renderers draw exactly</span></li>
+      <li><img src="static/img/mascots/critic.webp" alt="" loading="lazy"><b>Critic</b><span>checks that each image supports its answer</span></li>
+      <li><img src="static/img/mascots/solver.webp" alt="" loading="lazy"><b>Solver</b><span>learns from the samples, then answers</span></li>
+    </ul>
+
+    <div class="pipe" id="pipe">
+      <div class="pipe-tabs" role="tablist" aria-label="Pipeline stages">
+        <button role="tab" data-stage="all" aria-selected="true">Overview</button>
+        <button role="tab" data-stage="aba" aria-selected="false"><span class="sn">1</span>Budget</button>
+        <button role="tab" data-stage="tri" aria-selected="false"><span class="sn">2</span>Triplets</button>
+        <button role="tab" data-stage="route" aria-selected="false"><span class="sn">3</span>Routing</button>
+        <button role="tab" data-stage="real" aria-selected="false"><span class="sn">4</span>Rendering</button>
+        <button role="tab" data-stage="ver" aria-selected="false"><span class="sn">5</span>Verification</button>
+        <button role="tab" data-stage="df" aria-selected="false"><span class="sn">6</span>Filtering</button>
+      </div>
+      <p class="pipe-hint">Swipe the figure sideways to explore it.</p>
+      <div class="pipe-scroll" id="pipe-scroll">
+      <div class="pipe-fig">
+        <img src="static/img/pipeline.webp" alt="SIMIT's data synthesis pipeline (Fig. 2 of the paper): adaptive budget allocation, triplet synthesis, visualization routing, image realization, verification and difficulty filtering." width="2400" height="1169" loading="lazy">
+        <div class="pipe-spot" id="pipe-spot" aria-hidden="true"></div>
+      </div>
+      </div>
+      <div class="pipe-text" id="pipe-text" aria-live="polite"></div>
+    </div>
+
+    <h3 class="h3-center">Four ways to learn from imagined data</h3>
+    <div class="modes">
+      <article class="mode">
+        <div class="mode-top"><span class="pill pill-orange">in-context</span><span class="mode-gain">+6.98%</span></div>
+        <h4>SIMIT-ICL</h4>
+        <p>Imagined samples become few-shot demonstrations. No weight access needed, so it also fits API-only models.</p>
+      </article>
+      <article class="mode">
+        <div class="mode-top"><span class="pill pill-green">in-weight</span><span class="mode-gain">+1.69%</span></div>
+        <h4>SIMIT-FT <small>single-query</small></h4>
+        <p>Fine-tune on one query's samples, answer it, then reset. Nothing carries over between queries.</p>
+      </article>
+      <article class="mode">
+        <div class="mode-top"><span class="pill pill-green">in-weight</span><span class="mode-gain">+6.39%</span></div>
+        <h4>SIMIT-FT <small>test-set</small></h4>
+        <p>Pool the samples from every test query and fine-tune once, so practice for one query helps the others.</p>
+      </article>
+      <article class="mode mode-best">
+        <div class="mode-top"><span class="pill pill-both">both</span><span class="mode-gain">+7.20%</span></div>
+        <h4>SIMIT-FT&thinsp;&rarr;&thinsp;ICL</h4>
+        <p>Fine-tune on the pooled samples, then also show each query its own samples in context. Best overall.</p>
+      </article>
+    </div>
+    <p class="note center">Mean relative gain over zero-shot BAGEL-7B across 17 benchmarks.</p>
+  </div>
+</section>
+
+<!-- ============================ SKILLS ============================ -->
+<section class="section" id="skills">
+  <div class="wrap">
+    <p class="kicker">Beyond natural images</p>
+    <h2>Imagining charts, documents and diagrams</h2>
+    <p class="lead">
+      Unified models can paint photos, but they garble text, numbers and structure.
+      For structured visuals, SIMIT gives the model a <strong>skill library</strong>. The model writes a compact specification, and a deterministic renderer draws it exactly.
+      <span class="muted">Drag the slider to compare.</span>
+    </p>
+
+    <div class="cmp" id="cmp">
+      <div class="cmp-pick" id="cmp-pick" role="tablist" aria-label="Examples"></div>
+      <div class="cmp-stage">
+        <div class="cmp-box" id="cmp-box">
+          <img class="cmp-img cmp-wo" id="cmp-wo" alt="" draggable="false">
+          <img class="cmp-img cmp-w" id="cmp-w" alt="" draggable="false">
+          <div class="cmp-handle" id="cmp-handle" aria-hidden="true"><span></span></div>
+          <span class="cmp-label cmp-label-l">BAGEL native generation</span>
+          <span class="cmp-label cmp-label-r">with skill library</span>
+          <input type="range" min="0" max="100" value="50" step="0.5" class="cmp-range" id="cmp-range" aria-label="Slide to compare native generation and the skill library">
+        </div>
+        <p class="cmp-prompt" id="cmp-prompt"></p>
+      </div>
+    </div>
+
+    <h3 class="h3-center">One pipeline, many kinds of images</h3>
+    <p class="center muted">Click a render to see the prompt that produced it.</p>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- ============================ TRY IT ============================ -->
+<section class="section" id="try">
+  <div class="wrap">
+    <p class="kicker">Try it</p>
+    <h2>Run SIMIT on your own images</h2>
+    <p class="lead">
+      Ask any question about any image in the <strong>online demo</strong>, or add SIMIT to your own code with <strong class="nowrap">one pip install</strong>.
+    </p>
+
+    <div class="try-grid">
+      <div class="chart-card try-card">
+        <h3 class="chart-title">Online demo</h3>
+        <p class="chart-sub">Upload an image, ask a question, and compare the base model's answer with SIMIT's self-improved one. Choose BAGEL-7B, Lance or Qwen3.8-27B. Free on Hugging Face ZeroGPU.</p>
+        <a class="try-shot" href="https://huggingface.co/spaces/monurcan/simit" target="_blank" rel="noopener">
+          <img src="static/img/demo_screenshot.webp" width="1400" height="880" loading="lazy"
+               alt="The SIMIT demo: for a photo of a woman with a conical hat, the base model answers Unanswerable, SIMIT answers Vietnam.">
+        </a>
+        <div class="try-actions">
+          <a class="btn btn-dark" href="https://huggingface.co/spaces/monurcan/simit" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 8.2v7.6l6-3.8z" fill="currentColor"/></svg>
+            Open the demo
+          </a>
+        </div>
+      </div>
+
+      <div class="chart-card try-card">
+        <h3 class="chart-title">Python library</h3>
+        <p class="chart-sub">Imagine practice problems and answer with them in a few lines. Works with BAGEL, Lance and any Hugging Face vision-language model.</p>
+        <div class="bib code-block">
+          <button class="btn btn-ghost btn-sm bib-copy code-copy" type="button" data-copy="code-install">Copy</button>
+<pre id="code-install">pip install simit</pre>
+        </div>
+        <div class="bib code-block">
+          <button class="btn btn-ghost btn-sm bib-copy code-copy" type="button" data-copy="code-usage">Copy</button>
+<pre id="code-usage">from simit import SIMIT
+
+model = SIMIT.from_pretrained(
+    "ByteDance-Seed/BAGEL-7B-MoT")
+<span class="code-c"># imagine practice problems, then use them</span>
+demos = model.imagine(image, question)
+answer = model.answer(image, question, demos)</pre>
+        </div>
+        <div class="try-actions">
+          <a class="btn btn-ghost" href="https://pypi.org/project/simit/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M3.5 7.25L12 12l8.5-4.75M12 12v9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+            PyPI
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/monurcan/simit" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 00-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 015 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0012 2z" fill="currentColor"/></svg>
+            Library on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ RESULTS ============================ -->
+<section class="section section-soft" id="results">
+  <div class="wrap">
+    <p class="kicker">Results</p>
+    <h2>Beats test-time scaling and label-free RL</h2>
+    <p class="lead">
+      Compared with test-time scaling and label-free reinforcement learning on the same BAGEL-7B model, across 17 benchmarks in five domains.
+      Extra compute does not explain the gap. SIMIT-ICL uses 25&times; the zero-shot runtime, while label-free RL methods that run longer reach at most +2.07%.
+    </p>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <div>
+          <h3 class="chart-title">Mean relative gain over zero-shot BAGEL-7B</h3>
+          <p class="chart-sub">Each method at its best configuration. The right column shows end-to-end runtime relative to zero-shot. Hover a row for per-domain scores.</p>
+        </div>
+      </div>
+      <div class="hbar" id="chart-main"></div>
+      <details class="table-view">
+        <summary>Show as table (Table 1 of the paper)</summary>
+        <div class="table-scroll" id="table-main"></div>
+      </details>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head chart-head-row">
+        <div>
+          <h3 class="chart-title">Gains per benchmark</h3>
+          <p class="chart-sub">Relative improvement over BAGEL-7B. Hover a bar for raw scores.</p>
+        </div>
+        <div class="seg" id="variant-seg" role="radiogroup" aria-label="SIMIT variant">
+          <button role="radio" aria-checked="true" data-v="icl">ICL</button>
+          <button role="radio" aria-checked="false" data-v="sq">FT single-query</button>
+          <button role="radio" aria-checked="false" data-v="ts">FT test-set</button>
+          <button role="radio" aria-checked="false" data-v="tsicl">FT&rarr;ICL</button>
+        </div>
+      </div>
+      <div class="hbar hbar-bench" id="chart-bench"></div>
+      <details class="table-view">
+        <summary>Show as table</summary>
+        <div class="table-scroll" id="table-bench"></div>
+      </details>
+    </div>
+
+    <div class="callouts">
+      <div class="callout"><span class="callout-v">+53.9%</span><span>NoCaps CIDEr with SIMIT-ICL (0.755&nbsp;&rarr;&nbsp;1.162)</span></div>
+      <div class="callout"><span class="callout-v">+44.0%</span><span>OK-VQA accuracy with test-set SIMIT-FT (37.6&nbsp;&rarr;&nbsp;54.2)</span></div>
+      <div class="callout"><span class="callout-v">+2.21% / +3.97%</span><span>SIMIT-ICL on two other unified models, SenseNova-U1 and Lance</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHY ============================ -->
+<section class="section" id="why">
+  <div class="wrap">
+    <p class="kicker">Why does it work?</p>
+    <h2>It fixes mistakes instead of reinforcing them</h2>
+    <p class="lead">
+      Consensus rewards mostly sharpen answers the majority already gets right. Imagined supervision is created independently of the model's prediction on the test query, so it can correct errors.
+    </p>
+
+    <div class="why-grid">
+      <div class="chart-card">
+        <h3 class="chart-title">Fixes more errors, breaks no more</h3>
+        <p class="chart-sub">Test queries are split by whether Self-Consistency already answers correctly. The chart shows how often each method moves them.</p>
+        <div class="legend">
+          <span><i class="sw sw-red"></i>correct &rarr; wrong</span>
+          <span><i class="sw sw-teal"></i>wrong &rarr; correct</span>
+          <span class="legend-r">&Delta; (pp)</span>
+        </div>
+        <div class="div-chart" id="chart-strat"></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Cleaner supervision where the model is wrong</h3>
+        <p class="chart-sub">Supervision each method encourages on queries the base model gets wrong, as judged by a blind external evaluator.</p>
+        <div class="legend">
+          <span><i class="sw sw-teal"></i>correct</span>
+          <span><i class="sw sw-gray"></i>none</span>
+          <span><i class="sw sw-red"></i>incorrect</span>
+          <span class="legend-r">&delta; (pp)</span>
+        </div>
+        <div class="stack-chart" id="chart-noise"></div>
+      </div>
+    </div>
+    <p class="takeaway">
+      SIMIT corrects <b>14.4%</b> of initially wrong answers while breaking only <b>2.0%</b> of correct ones. It is the only method whose supervision on hard queries is more often correct than incorrect. Its overall supervision-error rate is about <b>12%</b>, against <b>33&ndash;38%</b> for label-free RL.
+      <span class="muted">&delta; is the gap in supervision-error rate between queries the base model gets wrong and those it gets right. A large positive &delta; means errors pile up exactly where the model is already weak.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============================ EXPLORE ============================ -->
+<section class="section section-soft" id="explore">
+  <div class="wrap">
+    <p class="kicker">Explore</p>
+    <h2>What did the model imagine?</h2>
+    <p class="lead">
+      22 real test queries from the paper (Fig. 4 and Appendix N). For each one, compare the practice problems SIMIT <strong>imagined</strong> with the
+      <strong>human-labeled</strong> neighbors that retrieval baselines use, and see who answered correctly. All results are precomputed, so no model runs in your browser.
+    </p>
+
+    <div class="ex" id="ex" tabindex="-1">
+      <div class="ex-filters" id="ex-filters" role="radiogroup" aria-label="Filter by benchmark"></div>
+      <div class="ex-rail" id="ex-rail" role="listbox" aria-label="Test queries"></div>
+
+      <div class="ex-detail" id="ex-detail" aria-live="polite"></div>
+
+      <div class="ex-nav">
+        <button type="button" class="btn btn-ghost btn-sm" id="ex-prev" aria-label="Previous example">&larr; Prev</button>
+        <span class="ex-count" id="ex-count"></span>
+        <button type="button" class="btn btn-ghost btn-sm" id="ex-next" aria-label="Next example">Next &rarr;</button>
+      </div>
+      <p class="note center">
+        RICES and TTT-NN retrieve nearest neighbors from a labeled pool, which SIMIT never uses. For compact display these examples disable adaptive budgeting and difficulty filtering and use K&nbsp;=&nbsp;2 samples.
+        A &#10003; follows the paper's per-example judgment.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BIBTEX ============================ -->
+<section class="section" id="bibtex">
+  <div class="wrap wrap-narrow">
+    <p class="kicker">Citation</p>
+    <h2>BibTeX</h2>
+    <div class="bib">
+      <button class="btn btn-ghost btn-sm bib-copy" id="bib-copy" type="button">Copy</button>
+<pre id="bib-text">@article{kaya2026simit,
+  title   = {{SIMIT}: Self-Improving Vision-Language Models via Imagination at Test-Time},
+  author  = {Kaya, Mehmet Onurcan and Elliott, Desmond and Papadopoulos, Dim P.},
+  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  year    = {2026}
+}</pre>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <img src="static/img/mascots/improved.webp" alt="" class="footer-mascot" loading="lazy">
+    <p>SIMIT: Self-Improving Vision-Language Models via Imagination at Test-Time</p>
+    <p class="muted small">All figures, samples and numbers are taken from the paper.</p>
+  </div>
+</footer>
+
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script src="static/js/examples.js"></script>
+<script src="static/js/main.js"></script>
+<script type="text/javascript">
+  var sc_project = 13169534;
+  var sc_invisible = 1;
+  var sc_security = "a421f4c3"; 
+</script>
+<script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+<noscript>
+  <div class="statcounter"><a title="Web Analytics Made Easy -
+Statcounter" href="https://statcounter.com/" target="_blank"><img class="statcounter"
+        src="https://c.statcounter.com/13169534/0/a421f4c3/1/" alt="Web Analytics Made Easy - Statcounter"
+        referrerPolicy="no-referrer-when-downgrade"></a></div>
+</noscript>
+</body>
+</html>
