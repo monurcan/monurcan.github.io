@@ -493,8 +493,8 @@ answer = model.answer(image, question, demos)</pre>
     <p class="kicker">Explore</p>
     <h2>What did the model imagine?</h2>
     <p class="lead">
-      22 real test queries from the paper (Fig. 4 and Appendix N). For each one, compare the practice problems SIMIT <strong>imagined</strong> with the
-      <strong>human-labeled</strong> neighbors that retrieval baselines use, and see who answered correctly. All results are precomputed, so no model runs in your browser.
+      For each test query, we compare the practice problems SIMIT <strong>imagined</strong> with the
+      <strong>human-labeled</strong> neighbors that retrieval-based baselines use, and see which methods answered correctly.
     </p>
 
     <div class="ex" id="ex" tabindex="-1">
@@ -510,7 +510,6 @@ answer = model.answer(image, question, demos)</pre>
       </div>
       <p class="note center">
         RICES and TTT-NN retrieve nearest neighbors from a labeled pool, which SIMIT never uses. For compact display these examples disable adaptive budgeting and difficulty filtering and use K&nbsp;=&nbsp;2 samples.
-        A &#10003; follows the paper's per-example judgment.
       </p>
     </div>
   </div>
@@ -539,7 +538,7 @@ answer = model.answer(image, question, demos)</pre>
   <div class="wrap">
     <img src="static/img/mascots/improved.webp" alt="" class="footer-mascot" loading="lazy">
     <p>SIMIT: Self-Improving Vision-Language Models via Imagination at Test-Time</p>
-    <p class="muted small">All figures, samples and numbers are taken from the paper.</p>
+    <!--<p class="muted small">All figures, samples and numbers are taken from the paper.</p>-->
   </div>
 </footer>
 
