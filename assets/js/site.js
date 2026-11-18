@@ -261,9 +261,9 @@
     }
     var toggle = function () { touched = true; apply(!stage.classList.contains('is-after')); };
     stage.addEventListener('click', toggle);
-    stage.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { toggle(); e.preventDefault(); } });
 
     var lstage = $('.relight-stage', fig), ltag = $('.relight-stage .stage-tag', fig), range = $('.sun-range', fig);
+    var envBox = $('.relight-env', fig), envLabel = $('.relight-envlabel', fig), envs = [];
     var ticks = $$('.relight-ticks span', fig), TIMES = ticks.map(function (t) { return t.textContent; }), imgs = [];
     function loadLight() {
       if (imgs.length) return;
@@ -274,14 +274,22 @@
         im.alt = k ? '' : 'An outdoor scene with picnic tables, photographed at different times of day';
         lstage.insertBefore(im, ltag);
         imgs.push(im);
+        var env = el('img');
+        env.src = 'assets/img/relight-env-' + k + '.webp';
+        env.width = 295; env.height = 144; env.decoding = 'async'; env.alt = '';
+        envBox.appendChild(env);
+        envs.push(env);
       });
       setTime(+range.value);
     }
     function setTime(v) {
       var base = Math.min(Math.floor(v), imgs.length - 1), frac = v - base, near = Math.round(v);
-      imgs.forEach(function (im, k) { im.style.opacity = k === base ? 1 : k === base + 1 ? frac : 0; }); // later photo fades in on top
+      [imgs, envs].forEach(function (set) { // later capture fades in on top
+        set.forEach(function (im, k) { im.style.opacity = k === base ? 1 : k === base + 1 ? frac : 0; });
+      });
       ticks.forEach(function (t, k) { t.classList.toggle('is-on', k === near); });
-      ltag.textContent = TIMES[near];
+      ltag.textContent = 'Real photo · ' + TIMES[near];
+      envLabel.textContent = 'HDR environment map captured at ' + TIMES[near];
       range.setAttribute('aria-valuetext', 'Around ' + TIMES[near]);
     }
     range.addEventListener('input', function () { touched = true; setTime(+range.value); });

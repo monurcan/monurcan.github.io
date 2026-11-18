@@ -36,4 +36,4 @@ Thumbnails zoom in slightly on hover. To make one cycle through extra frames, gi
 - Every research figure uses a real example: the SIMIT VizWiz query and its imagined practice images (Fig. 1), the TTAug GQA example (Fig. 2), a POEM result and five WildLight captures (Fig. 3).
 - Fig. 4 runs classical Fourier phase retrieval (Fienup's HIO, β = 0.9, 280 HIO + 20 error-reduction iterations) on a noise-free, 2× oversampled 64×64 grayscale simulation, in a Web Worker. Everything shown is the algorithm's own output; the "fit error" uses only the measurement. The three default random starts were picked to show the three typical outcomes (success, stuck, upside-down twin); "New starts" draws fresh random ones.
 - There is no header or theme switch: the page follows the visitor's light/dark system setting.
-- `assets/img/og.jpg` (the social preview card) and `apple-touch-icon.png` are static images; regenerate them by hand if the name or design changes.
+- `favicon.ico` is the original site's icon (16, 32 and 48 px). `assets/img/og.jpg` (the social preview card) is a static image; regenerate it by hand if the name or design changes.

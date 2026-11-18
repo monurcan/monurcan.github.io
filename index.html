@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
   <meta charset="utf-8">
@@ -7,14 +7,13 @@
   <meta name="description" content="Final-year PhD student at DTU on test-time self-improvement: helping vision-language models fix their own mistakes without labels. Open to 2027 internships.">
   <meta name="author" content="M. Onurcan Kaya">
   <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="google-site-verification" content="65FosXMeS9rjlvRUV5HA9Hw02QAKatoKm_CTN7R_Pek">
   <link rel="canonical" href="https://monurcan.github.io/">
 
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#111114" media="(prefers-color-scheme: dark)">
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="assets/favicon.ico" sizes="32x32">
-  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
 
   <!-- Social cards -->
   <meta property="og:type" content="profile">
@@ -158,7 +157,7 @@
                 <div class="step-body">
                   <p class="step-t">A test question it gets wrong</p>
                   <div class="case">
-                    <img class="case-img" src="assets/img/simit-query.webp" width="360" height="480" loading="lazy" decoding="async" alt="A dim, blurry photo of a cat lying on a lap next to a keyboard">
+                    <img class="case-img" src="assets/img/simit-query.webp" width="192" height="144" loading="lazy" decoding="async" alt="A dim, blurry photo of a cat lying on a lap next to a keyboard">
                     <div>
                       <p class="case-q">What color is this cat?</p>
                       <p class="verdict is-wrong"><b>“Unanswerable”</b><svg class="i" aria-hidden="true"><use href="#i-cross"/></svg><span class="sr-only">(wrong)</span></p>
@@ -171,8 +170,8 @@
                 <div class="step-body">
                   <p class="step-t">It synthesizes related practice problems: the answer first, then an image that fits it</p>
                   <ul class="practice">
-                    <li class="practice-item"><img src="assets/img/simit-syn1.webp" width="240" height="240" loading="lazy" decoding="async" alt="A generated photo of a fluffy cat sitting on a lap"><p><span class="practice-q">Is the cat sitting or lying down?</span><span class="practice-a">Sitting</span></p></li>
-                    <li class="practice-item"><img src="assets/img/simit-syn2.webp" width="240" height="240" loading="lazy" decoding="async" alt="A generated photo of a fluffy cat standing on a lap"><p><span class="practice-q">How many legs does the cat have?</span><span class="practice-a">Four</span></p></li>
+                    <li class="practice-item"><img src="assets/img/simit-syn1.webp" width="112" height="112" loading="lazy" decoding="async" alt="A generated photo of a fluffy cat sitting on a lap"><p><span class="practice-q">Is the cat sitting or lying down?</span><span class="practice-a">Sitting</span></p></li>
+                    <li class="practice-item"><img src="assets/img/simit-syn2.webp" width="112" height="112" loading="lazy" decoding="async" alt="A generated photo of a fluffy cat standing on a lap"><p><span class="practice-q">How many legs does the cat have?</span><span class="practice-a">Four</span></p></li>
                   </ul>
                 </div>
               </li>
@@ -204,7 +203,7 @@
                 <div class="step-body">
                   <p class="step-t">A test question it gets wrong</p>
                   <div class="case">
-                    <img class="case-img" src="assets/img/ttaug-original.webp" width="480" height="360" loading="lazy" decoding="async" alt="An office desk with a laptop and papers, in front of a window with blinds">
+                    <img class="case-img" src="assets/img/ttaug-original.webp" width="192" height="144" loading="lazy" decoding="async" alt="An office desk with a laptop and papers, in front of a window with blinds">
                     <div>
                       <p class="case-q">What's in front of the window?</p>
                       <p class="verdict is-wrong"><b>“blinds”</b><svg class="i" aria-hidden="true"><use href="#i-cross"/></svg><span class="sr-only">(wrong)</span></p>
@@ -238,7 +237,7 @@
         <div class="route-text">
           <p class="kicker">Also</p>
           <h3>Image editing</h3>
-          <p>In <a href="#pub-poem">POEM</a>, a multimodal language model turns an edit instruction into object masks before and after the change, which guide a diffusion model to precise object-level edits. <a href="#pub-wild">WildLight</a> tests how well AI can change the lighting of a real photo.</p>
+          <p>In <a href="#pub-poem">POEM</a>, a multimodal language model turns an edit instruction into object masks before and after the change, which guide a diffusion model to precise object-level edits. <a href="#pub-wild">WildLight</a> tests how well AI can relight a real photo to match a target environment map.</p>
         </div>
         <figure class="fig js-only" id="fig-3">
           <div class="fig-body demo edit">
@@ -248,20 +247,23 @@
             </div>
             <div class="edit-panel" id="panel-move" role="tabpanel" aria-labelledby="tab-move">
               <p class="demo-q"><span class="q-tag">Instruction</span>Move the lantern to the left by 120 px.</p>
-              <div class="stage edit-stage" role="button" tabindex="0" aria-pressed="false" aria-labelledby="edit-tag">
-                <img class="edit-before" src="assets/img/poem-before.webp" width="420" height="422" loading="lazy" decoding="async" alt="A lantern in the middle of a forest path at dusk">
-                <img class="edit-after" src="assets/img/poem-after.webp" width="420" height="420" loading="lazy" decoding="async" alt="The scene after the edit, with the lantern moved to the left">
+              <button class="stage edit-stage" type="button" aria-pressed="false" aria-labelledby="edit-tag">
+                <img class="edit-before" src="assets/img/poem-before.webp" width="420" height="280" loading="lazy" decoding="async" alt="A lantern in the middle of a forest path at dusk">
+                <img class="edit-after" src="assets/img/poem-after.webp" width="420" height="280" loading="lazy" decoding="async" alt="The scene after the edit, with the lantern moved to the left">
                 <span class="stage-tag" id="edit-tag">Before · click to edit</span>
-              </div>
+              </button>
             </div>
             <div class="edit-panel" id="panel-light" role="tabpanel" aria-labelledby="tab-light" hidden>
-              <p class="demo-q"><span class="q-tag">Instruction</span>Show this scene at a different time of day.</p>
-              <div class="stage relight-stage"><span class="stage-tag">11:35</span></div>
-              <input class="sun-range" type="range" min="0" max="4" step="0.01" value="0" aria-label="Time of day: move the sun">
+              <div class="relight-target">
+                <div class="relight-env" aria-hidden="true"></div>
+                <p><span class="q-tag">Target light</span><span class="relight-envlabel">HDR environment map captured at 11:35</span></p>
+              </div>
+              <div class="stage relight-stage"><span class="stage-tag">Real photo · 11:35</span></div>
+              <input class="sun-range" type="range" min="0" max="4" step="0.01" value="0" aria-label="Target lighting: time of day">
               <div class="relight-ticks" aria-hidden="true"><span>11:35</span><span>12:40</span><span>15:00</span><span>16:06</span><span>17:15</span></div>
             </div>
           </div>
-          <figcaption><span class="fig-no">Fig. 3</span> <b>Two kinds of edits.</b> A real POEM result, and real WildLight photos of one scene through the afternoon. Click the photo, or drag the sun.</figcaption>
+          <figcaption><span class="fig-no">Fig. 3</span> <b>Two kinds of edits.</b> A real POEM result, edited from a text instruction. In WildLight the target is lighting, given as an HDR environment map captured with each real photo, so relit images can be scored against the real one. Click the photo, or drag the sun.</figcaption>
         </figure>
       </article>
 
@@ -412,7 +414,7 @@
 
         <li class="pub" id="pub-poem" data-topics="gen">
           <a class="pub-media" href="https://poem.compute.dtu.dk" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-            <video class="hover-video" muted playsinline loop preload="none" width="960" height="540" poster="assets/img/poem-poster.webp" aria-label="POEM: a language model plans the edit, then an image generator draws it">
+            <video class="hover-video" muted playsinline loop preload="none" width="960" height="540" poster="assets/img/poem-poster.webp">
               <source src="assets/video/poem.mp4" type="video/mp4">
             </video>
           </a>
@@ -527,17 +529,17 @@
   </main>
 
   <!-- Default Statcounter code for Onur Kaya https://monurcan.github.io/ -->
-  <script type="text/javascript">
+  <script>
     var sc_project = 13169534;
     var sc_invisible = 1;
     var sc_security = "a421f4c3";
   </script>
-  <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+  <script src="https://www.statcounter.com/counter/counter.js" async></script>
   <noscript>
     <div class="statcounter"><a title="Web Analytics Made Easy -
 Statcounter" href="https://statcounter.com/" target="_blank"><img class="statcounter"
           src="https://c.statcounter.com/13169534/0/a421f4c3/1/" alt="Web Analytics Made Easy - Statcounter"
-          referrerPolicy="no-referrer-when-downgrade"></a></div>
+          referrerpolicy="no-referrer-when-downgrade"></a></div>
   </noscript>
   <!-- End of Statcounter Code -->
 </body>

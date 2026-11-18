@@ -34,6 +34,15 @@ def webp(im, path, width=None, quality=80):
     return im.size
 
 
+def cover(im, w, h, fy=0.5):
+    """Resize and crop to exactly w x h, like CSS object-fit: cover; fy anchors the vertical crop."""
+    im = im.convert("RGB")
+    s = max(w / im.width, h / im.height)
+    im = im.resize((round(im.width * s), round(im.height * s)), Image.LANCZOS)
+    x, y = (im.width - w) // 2, round((im.height - h) * fy)
+    return im.crop((x, y, x + w, y + h))
+
+
 # --- portrait -----------------------------------------------------------------
 src = Image.open(SRC / "images" / "profile.png").convert("RGB")
 cx, cy, s = 495, 590, 760  # head-and-shoulders square crop
@@ -86,13 +95,13 @@ for r in range(4):
         tile = grid.crop((round(c * cw) + 3, round(r * ch) + 3, round((c + 1) * cw) - 3, round((r + 1) * ch) - 3))
         sprite.paste(tile.resize((200, 150), Image.LANCZOS), (c * 200, r * 150))
 sprite.save(IMG / "ttaug-views.webp", "WEBP", quality=74, method=6)
-webp(Image.open(samples / "gqa_n525901_35.jpg").resize((480, 360), Image.LANCZOS), IMG / "ttaug-original.webp")
+webp(cover(Image.open(samples / "gqa_n525901_35.jpg"), 192, 144), IMG / "ttaug-original.webp")  # shown at 96x72
 
 # --- Fig. 1: the real SIMIT example (VizWiz query + two imagined practice images)
 simit_samples = ROOT / "simit" / "static" / "img" / "samples"
-webp(Image.open(simit_samples / "vizwiz_vqa_val_345_query.webp"), IMG / "simit-query.webp", width=360, quality=82)
+webp(cover(Image.open(simit_samples / "vizwiz_vqa_val_345_query.webp"), 192, 144, 0.55), IMG / "simit-query.webp", quality=82)  # shown at 96x72
 for k in (1, 2):
-    webp(Image.open(simit_samples / f"vizwiz_vqa_val_345_syn{k}.webp"), IMG / f"simit-syn{k}.webp", width=240, quality=82)
+    webp(cover(Image.open(simit_samples / f"vizwiz_vqa_val_345_syn{k}.webp"), 112, 112), IMG / f"simit-syn{k}.webp", quality=82)  # shown at 56x56
 
 # --- Fig. 3: POEM before/after, cropped from the last frame of the original clip
 if shutil.which("ffmpeg"):
@@ -101,13 +110,14 @@ if shutil.which("ffmpeg"):
     frame = Image.open(last).convert("RGB")
     f = frame.width / 960
     for name, box in (("before", (25, 124, 219, 319)), ("after", (755, 182, 949, 376))):  # inset past the frame borders
-        webp(frame.crop(tuple(int(v * f) for v in box)), IMG / f"poem-{name}.webp", width=420, quality=82)
+        webp(cover(frame.crop(tuple(int(v * f) for v in box)), 420, 280, 0.75), IMG / f"poem-{name}.webp", quality=82)  # shown at 3:2
     last.unlink()
 
-# --- Relighting figure: the scene part of the five WildLight captures (11:35 … 17:15)
+# --- Relighting figure: each WildLight capture = HDR environment map (rows 24-171) + the real photo (176+)
 for i in range(5):
     frame = Image.open(SRC / "images" / f"wildlight_{i}.png").convert("RGB")
     webp(frame.crop((0, 178, frame.width, frame.height)), IMG / f"relight-{i}.webp", quality=86)
+    webp(frame.crop((0, 26, frame.width, 170)), IMG / f"relight-env-{i}.webp", quality=86)
 
-shutil.copy(SRC / "images" / "favicon.ico", OUT / "favicon.ico")
+shutil.copy(SRC / "images" / "favicon.ico", ROOT / "favicon.ico")  # the original favicon, served from the site root
 print("done:", sorted(p.name for p in IMG.iterdir()))
