@@ -235,9 +235,9 @@
   })();
 
   /* ============================================================================
-     Fig. 3: two kinds of edits. "Move an object": the real POEM result for
+     Fig. 3: two kinds of edits. "Object-level editing": the real POEM result for
      "move the lantern to the left by 120 px" (click the photo to apply).
-     "Change the light": five real WildLight captures; the sun slider blends them.
+     "Relighting": five real WildLight captures; the sun slider blends them.
      ========================================================================== */
   (function editing() {
     var fig = $('#fig-3');
