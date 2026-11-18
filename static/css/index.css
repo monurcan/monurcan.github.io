@@ -71,6 +71,58 @@ video {
     box-shadow: var(--shadow-md);
 }
 
+/* Availability badge under the name */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 0.9rem;
+    margin-bottom: 28px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 999px;
+}
+
+.status-dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    flex-shrink: 0;
+}
+
+.status-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: status-pulse 2s ease-out infinite;
+}
+
+@keyframes status-pulse {
+    0%   { transform: scale(1);   opacity: 0.6; }
+    100% { transform: scale(2.6); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .status-dot::after { animation: none; }
+}
+
+/* Collaboration line */
+.content p.open-to {
+    font-size: 1.08em;
+    color: var(--text-primary);
+}
+
+.content p.open-to strong {
+    color: var(--primary-color);
+}
+
 /* Contact info styling */
 .contact-info {
     margin-bottom: 1.5rem;
