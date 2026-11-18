@@ -178,20 +178,22 @@
   })();
 
   /* ============================================================================
-     Fig. 2: look again (the real GQA example from the TTAug paper).
-     1. The original input gives "blinds". 2. 15 altered versions (plus the
-     original). 3. Averaging the next-word probabilities over all 16 gives "desk".
+     Fig. 2: look again (the real ChartQA example from the TTAug project page).
+     1. The original input gives "France". 2. 15 altered versions (plus the
+     original). 3. Averaging the next-word probabilities over all 16 gives "Germany".
      ========================================================================== */
   (function lookAgain() {
     var fig = $('#fig-2');
     if (!fig) return;
     var body = $('.tta', fig), grid = $('.tta-grid', fig), qtag = $('.tta-qtag', fig), qtext = $('.tta-qtext', fig);
     var st = stepper(fig), out = $('.demo-out', fig), btn = $('.tta-btn', fig);
-    var ORIG = "What's in front of the window?";
-    var QS = ["W hat ' s in feont of the win dow?", "Wh at ' s in fro nt of the window?", "W hat ' s in fro nt of the win dow?", "Wh at ' s in fro nt of the wi ndow?",
-      "Wh at ' s in fr ont of the wi ndod?", "W hat ' s in f romt of the window?", "W hat ' s in fro nt of the windo#?", "Wmat ' s in fro nt of the wi ndow?",
-      "What ' s in f ront of the !ind ow?", "Wh at ' s in fr0nt of the wi ndow?", "Wh at ' s in front of the qind ow?", "Wh at ' s in f%ont of the win dow?",
-      "W hat ' s in front of the wi ndow?", "W hat ' s in front of the winE ow?", "dhat ' s in fro nt of the win dow?", ORIG];
+    var ORIG = "Which country had the most visitors to Italy in 2018?";
+    var QS = ["Whish countrg had the mo st vi sitors to I ta>y in 2 018?", "Which couJtry had the m ost vis itors to Italy in 2 018?", "Which coun try had the mo st v isitors to It aly in 20 18?",
+      "Whi ch co untry had the mLst visitors to I taly in 2 018?", "Wh ich country had the most visitors to Ita ly in 20 18?", "Wh ich country had the mo st vi siRors to Italy in 2 018?",
+      "Wh ich c ountry had the mo st visi tors to Italy in 2 018?", "Which country had the mo st v isitors to Ita ly in W018?", "Which country had the mo st visitors to I raly in 20 18?",
+      "Wh ich cou ntry had the most visitors to Ita ly in 2018?", "Wnich cou ntry had the m ost visitors to Italy in 20 18?", "Wbich co8nt ry had the most visiYors to It aly in 2 018?",
+      "Which c ountry had the m ost visJtors to I taly in 2018?", "Whi ch country had the mo st visit ors to ItZly in 2 018?", "Wgich count ry had the most visito rs to Ita ly in 201*?",
+      ORIG];
     var timer = null, touched = false, done = false;
     var tiles = QS.map(function (q, i) {
       var li = el('li', 'tta-tile');
@@ -224,7 +226,7 @@
       btn.textContent = 'Start over';
       st.on(1);
       body.classList.add('is-many');
-      timer = setTimeout(function () { st.on(2); verdict(out, 'desk', true); }, reduceMotion ? 0 : 1100); // once the versions have landed
+      timer = setTimeout(function () { st.on(2); verdict(out, 'Germany', true); }, reduceMotion ? 0 : 1100); // once the versions have landed
     }
     btn.addEventListener('click', function () { touched = true; if (done) reset(); else run(); });
     reset();

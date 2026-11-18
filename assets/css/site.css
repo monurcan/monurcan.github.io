@@ -34,6 +34,8 @@
   --accent-hover: #2433ad;
   --on-accent: #ffffff;
   --accent-soft: rgba(51, 70, 211, 0.08);
+  --accent-2: #c2560f;
+  --marker: #f4a73b;
   --chart: #3346d3;
   --good: #15803d;
   --good-soft: #eaf6ee;
@@ -53,7 +55,7 @@
     color-scheme: dark;
     --bg: #111114; --panel: #18181d; --paper: #202026; --thumb: #f4f4f2;
     --ink: #ececf0; --ink-2: #babac3; --ink-3: #8f8f9a; --rule: #28282f; --rule-strong: #3a3a43;
-    --accent: #9eabff; --accent-hover: #c3caff; --on-accent: #111114; --accent-soft: rgba(158, 171, 255, 0.12);
+    --accent: #9eabff; --accent-hover: #c3caff; --on-accent: #111114; --accent-soft: rgba(158, 171, 255, 0.12); --accent-2: #f29a55; --marker: #e89a2c;
     --chart: #6f7ff0; --good: #4ade80; --good-soft: rgba(74, 222, 128, 0.1); --bad: #fb923c;
     --nav-bg: rgba(17, 17, 20, 0.82); --paper-shadow: 0 0 0 1px #2c2c34;
   }
@@ -62,7 +64,7 @@
   color-scheme: dark;
   --bg: #111114; --panel: #18181d; --paper: #202026; --thumb: #f4f4f2;
   --ink: #ececf0; --ink-2: #babac3; --ink-3: #8f8f9a; --rule: #28282f; --rule-strong: #3a3a43;
-  --accent: #9eabff; --accent-hover: #c3caff; --on-accent: #111114; --accent-soft: rgba(158, 171, 255, 0.12);
+  --accent: #9eabff; --accent-hover: #c3caff; --on-accent: #111114; --accent-soft: rgba(158, 171, 255, 0.12); --accent-2: #f29a55; --marker: #e89a2c;
   --chart: #6f7ff0; --good: #4ade80; --good-soft: rgba(74, 222, 128, 0.1); --bad: #fb923c;
   --nav-bg: rgba(17, 17, 20, 0.82); --paper-shadow: 0 0 0 1px #2c2c34;
 }
@@ -133,7 +135,7 @@ code { font-family: var(--mono); font-size: 0.86em; }
   display: grid; grid-template-columns: minmax(0, 1fr) 232px; column-gap: clamp(28px, 5vw, 64px);
   align-items: start; padding-block: clamp(20px, 3vw, 40px) clamp(28px, 3.5vw, 44px);
 }
-.hero-side { display: grid; gap: 12px; }
+.hero-side { display: grid; gap: 12px; align-self: start; margin-top: 28px; } /* a little lower than the name */
 .hero-photo { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 22px; }
 h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(2.3rem, 1.8rem + 2.6vw, 4rem); line-height: 1.02; letter-spacing: -0.028em; }
 .zh {
@@ -173,6 +175,46 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.85rem, 1.55
 .section-lede { margin-top: 10px; max-width: 64ch; color: var(--ink-2); font-size: 1.05rem; }
 .section-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; }
 .quiet-link { display: inline-flex; align-items: center; gap: 4px; color: var(--ink-2); font-size: 0.94rem; font-weight: 500; text-decoration: none; }
+
+/* ---------- Research intro: heading + text left, timeline right ---------- */
+.intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 20px clamp(24px, 4vw, 52px); align-items: start; }
+/* grey = before deployment, amber = deployment, blue = test time (my work) */
+.tl-fig { display: grid; grid-template-columns: minmax(0, 0.85fr) 104px minmax(0, 1.25fr); grid-template-rows: auto 1fr auto; gap: 10px 14px; margin: 0; }
+.tlf-title { grid-row: 1; align-self: end; text-align: center; font: 700 0.86rem/1.25 var(--sans); color: var(--ink-2); }
+.tlf-t-before { grid-column: 1; }
+.tlf-t-after { grid-column: 3; color: var(--accent); }
+/* bottom padding = one box + the arrow, so post-training sits level with the gap between the two routes */
+.tlf-flow { grid-row: 2; grid-column: 1; align-self: center; display: grid; padding-bottom: calc(2.52rem + 14px); text-align: center; font-size: 0.84rem; line-height: 1.5; color: var(--ink); }
+.tlf-flow span:not(.tlf-arr) { position: relative; padding: 7px 6px; border-radius: 8px; background: var(--panel); }
+.tlf-arr { justify-self: center; line-height: 1.5; color: var(--ink-3); transform: rotate(90deg); }
+/* the arrow from post-training runs on across the deployment line, into test time */
+.tlf-flow span:last-child::after { content: ""; position: absolute; z-index: 1; left: 100%; top: 50%; width: 124px; height: 2px; margin-top: -1px; background: var(--ink-3); }
+.tlf-flow span:last-child::before { content: ""; position: absolute; z-index: 1; left: calc(100% + 124px); top: 50%; margin-top: -5px; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent var(--ink-3); }
+.tlf-routes { grid-row: 2; grid-column: 3; align-self: center; display: grid; gap: 10px; }
+.tlf-route { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 9px; padding: 8px 10px; border-radius: 10px; background: var(--accent-soft); font-size: 0.8rem; line-height: 1.35; color: var(--ink-3); text-decoration: none; transition: box-shadow 0.15s; }
+.tlf-route:hover { color: var(--ink-3); box-shadow: inset 0 0 0 1.5px var(--accent); }
+.tlf-route b { display: block; font-size: 0.88rem; font-weight: 650; color: var(--ink); }
+.tlf-n { display: grid; place-items: center; width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; background: var(--accent); color: var(--on-accent); font: 700 0.72rem/1 var(--sans); }
+.tlf-cap { grid-row: 3; text-align: center; text-wrap: balance; font-size: 0.8rem; font-style: italic; line-height: 1.35; color: var(--ink-3); }
+.tlf-cap b { color: var(--ink); }
+.tlf-cap-before { grid-column: 1; }
+.tlf-cap-after { grid-column: 3; }
+.tlf-marker { grid-row: 1 / 4; grid-column: 2; position: relative; display: grid; justify-items: center; align-content: start; }
+.tlf-marker::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; margin-left: -2px; border-radius: 2px; background: var(--marker); }
+.tlf-marker span { position: relative; display: grid; padding: 6px 7px; border-radius: 7px; background: var(--marker); color: #241600; font: 700 0.76rem/1.25 var(--sans); text-align: center; }
+.tlf-marker small { font-size: 0.68rem; font-weight: 500; text-wrap: balance; }
+@media (max-width: 859px) { .intro { grid-template-columns: minmax(0, 1fr); } .tl-fig { max-width: 560px; } }
+@media (max-width: 520px) { /* phones: the timeline runs top to bottom */
+  .tl-fig { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; gap: 8px; }
+  .tl-fig > * { grid-column: 1; }
+  .tlf-t-before { grid-row: 1; } .tlf-flow { grid-row: 2; } .tlf-cap-before { grid-row: 3; } .tlf-marker { grid-row: 4; }
+  .tlf-t-after { grid-row: 5; } .tlf-routes { grid-row: 6; } .tlf-cap-after { grid-row: 7; }
+  .tlf-flow { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; padding-bottom: 0; }
+  .tlf-arr { transform: none; }
+  .tlf-flow span:last-child::before, .tlf-flow span:last-child::after { display: none; }
+  .tlf-marker { padding-block: 6px; }
+  .tlf-marker::before { top: 50%; bottom: auto; left: 0; right: 0; width: auto; height: 4px; margin: -2px 0 0; }
+}
 
 /* ---------- Research routes ---------- */
 .route {
@@ -230,7 +272,7 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.85rem, 1.55
 .practice-a::before { content: "Answer: "; font-weight: 500; color: var(--ink-3); }
 
 /* Fig. 2: look again (TTAug) */
-.tta-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; width: min(100%, 300px); aspect-ratio: 4 / 3; }
+.tta-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; width: min(100%, 300px); aspect-ratio: 10 / 7; }
 .tta-tile {
   background-size: 400% 400%; background-color: var(--rule-strong); border-radius: 3px; cursor: pointer;
   opacity: 0.25; transform: scale(0.88); transition: opacity 0.3s, transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2), box-shadow 0.15s;
@@ -248,6 +290,13 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.85rem, 1.55
 .tab { padding: 6px 12px; border: 0; border-radius: 999px; background: transparent; cursor: pointer; font-size: 0.84rem; font-weight: 500; color: var(--ink-2); transition: background 0.15s, color 0.15s; }
 .tab:hover { color: var(--ink); }
 .tab[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+/* Both tab panels share one grid cell, so the figure keeps the taller panel's height on either tab;
+   the POEM photo grows to fill the space */
+.fig-body.edit { display: grid; grid-template-rows: auto 1fr; }
+.edit .tabs { grid-row: 1; grid-column: 1; justify-self: start; }
+.edit-panel { grid-row: 2; grid-column: 1; display: flex; flex-direction: column; min-width: 0; }
+.edit-panel[hidden] { display: flex; visibility: hidden; }
+.edit-stage { flex: 1 1 auto; aspect-ratio: auto; min-height: 220px; }
 button.stage { display: block; width: 100%; padding: 0; border: 0; font: inherit; color: inherit; text-align: left; }
 .edit-stage { cursor: pointer; }
 .edit-stage:hover .stage-tag, .edit-stage:focus-visible .stage-tag { background: var(--accent); }

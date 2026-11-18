@@ -85,17 +85,17 @@ if shutil.which("ffmpeg"):
     webp(Image.open(IMG / "poem-poster.png"), IMG / "poem-poster.webp")
     (IMG / "poem-poster.png").unlink()
 
-# --- Fig. 2: real TTAug example (GQA) from the project page: original + 16 augmented views as one sprite
+# --- Fig. 2: real TTAug example (ChartQA) from the project page: 16 inputs (15 altered + original) as one sprite
 samples = ROOT / "efficient_test_time_scaling" / "static" / "images" / "samples"
-grid = Image.open(samples / "saved_inputs" / "GQA_TestDev_Balanced" / "image_grid.jpg").convert("RGB")
+grid = Image.open(samples / "saved_inputs" / "ChartQA_TEST" / "image_grid.jpg").convert("RGB")
 cw, ch = grid.width / 4, grid.height / 4
-sprite = Image.new("RGB", (800, 600))
+sprite = Image.new("RGB", (800, 560))  # 200x140 tiles, the chart's aspect
 for r in range(4):
     for c in range(4):
         tile = grid.crop((round(c * cw) + 3, round(r * ch) + 3, round((c + 1) * cw) - 3, round((r + 1) * ch) - 3))
-        sprite.paste(tile.resize((200, 150), Image.LANCZOS), (c * 200, r * 150))
+        sprite.paste(tile.resize((200, 140), Image.LANCZOS), (c * 200, r * 140))
 sprite.save(IMG / "ttaug-views.webp", "WEBP", quality=74, method=6)
-webp(cover(Image.open(samples / "gqa_n525901_35.jpg"), 192, 144), IMG / "ttaug-original.webp")  # shown at 96x72
+webp(cover(Image.open(samples / "chartqa_1423.jpg"), 192, 144), IMG / "ttaug-original.webp", quality=86)  # shown at 96x72
 
 # --- Fig. 1: the real SIMIT example (VizWiz query + two imagined practice images)
 simit_samples = ROOT / "simit" / "static" / "img" / "samples"
@@ -110,7 +110,7 @@ if shutil.which("ffmpeg"):
     frame = Image.open(last).convert("RGB")
     f = frame.width / 960
     for name, box in (("before", (25, 124, 219, 319)), ("after", (755, 182, 949, 376))):  # inset past the frame borders
-        webp(cover(frame.crop(tuple(int(v * f) for v in box)), 420, 280, 0.75), IMG / f"poem-{name}.webp", quality=82)  # shown at 3:2
+        webp(cover(frame.crop(tuple(int(v * f) for v in box)), 420, 420), IMG / f"poem-{name}.webp", quality=82)  # shown about square
     last.unlink()
 
 # --- Relighting figure: each WildLight capture = HDR environment map (rows 24-171) + the real photo (176+)

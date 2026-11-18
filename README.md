@@ -33,7 +33,7 @@ Thumbnails zoom in slightly on hover. To make one cycle through extra frames, gi
 ## Notes
 
 - The figures are progressive enhancement. Without JavaScript the page still shows all text, publications and links.
-- Every research figure uses a real example: the SIMIT VizWiz query and its imagined practice images (Fig. 1), the TTAug GQA example (Fig. 2), a POEM result and five WildLight captures (Fig. 3).
+- Every research figure uses a real example: the SIMIT VizWiz query and its imagined practice images (Fig. 1), the TTAug ChartQA example (Fig. 2), a POEM result and five WildLight captures (Fig. 3).
 - Fig. 4 runs classical Fourier phase retrieval (Fienup's HIO, β = 0.9, 280 HIO + 20 error-reduction iterations) on a noise-free, 2× oversampled 64×64 grayscale simulation, in a Web Worker. Everything shown is the algorithm's own output; the "fit error" uses only the measurement. The three default random starts were picked to show the three typical outcomes (success, stuck, upside-down twin); "New starts" draws fresh random ones.
 - There is no header or theme switch: the page follows the visitor's light/dark system setting.
 - `favicon.ico` is the original site's icon (16, 32 and 48 px). `assets/img/og.jpg` (the social preview card) is a static image; regenerate it by hand if the name or design changes.
