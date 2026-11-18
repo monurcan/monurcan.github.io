@@ -39,6 +39,7 @@
   </script>
 
   <!-- One self-hosted display face; body text uses the system UI font (zero bytes, no third-party requests) -->
+  <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/newsreader-roman.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/newsreader-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/site.css">
@@ -143,7 +144,7 @@
       <div class="intro">
         <div class="intro-text">
           <h2 id="research-h">Research focus</h2>
-          <p class="section-lede">After deployment, a vision-language model stops learning. It still meets new images and questions unlike its training data, and when it answers wrong, nobody tells it the right answer: there are no labels. I work on <strong>test-time self-improvement</strong>: the model uses extra computation to get better on the very questions it is asked, still without labels. There are two ways to do it.</p>
+          <p class="section-lede">After deployment, a vision-language model stops learning. It still meets new images and questions unlike its training data, and when it answers wrong, nobody tells it the right answer: there are no labels. I work on <strong>test-time self-improvement</strong>: the model uses extra computation to get better on the very questions it is asked, still without labels. There are two ways.</p>
         </div>
         <figure class="tl-fig" aria-label="Timeline: traditional training (pre-training, then post-training) happens before deployment. After deployment, new questions arrive without labels, and test-time self-improvement either improves the model (route 1) or improves the answer (route 2).">
           <p class="tlf-title tlf-t-before">Traditional training</p>

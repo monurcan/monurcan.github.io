@@ -17,7 +17,7 @@ index.html                 all content (hero, research focus, publications, back
 assets/css/site.css        all styling; light/dark colors are the tokens at the top
 assets/js/site.js          the four research figures, publication filters, thumbnail motion
 assets/js/portrait-data.js 64×64 grayscale portrait, the hidden ground truth for Fig. 4 (loaded only when needed)
-assets/fonts/              Newsreader (headings), subset and self-hosted, with its license
+assets/fonts/              Newsreader (headings) and Inter (text), subset and self-hosted, with their licenses
 assets/img, assets/video   optimized WebP/MP4 images and video
 tools/make_assets.py       regenerates assets/img, assets/video and portrait-data.js
 simit/, efficient_test_time_scaling/   project pages
