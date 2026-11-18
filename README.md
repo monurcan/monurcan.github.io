@@ -1,13 +1,11 @@
-# Personal site, v2
+# monurcan.github.io
 
-A single static page with no build step and no frameworks. The design is self-contained in this folder.
+Personal site of M. Onurcan Kaya. A single static page with no build step and no frameworks.
 
 ## Preview
 
 ```bash
-cd ..                      # repository root
-python3 -m http.server 8000
-# open http://localhost:8000/v2/
+python3 -m http.server 8000   # from the repository root, then open http://localhost:8000/
 ```
 
 Opening `index.html` straight from disk works too.
@@ -15,24 +13,22 @@ Opening `index.html` straight from disk works too.
 ## What's where
 
 ```
-index.html                 all content (hero, research, publications)
+index.html                 all content (hero, research focus, publications, background)
 assets/css/site.css        all styling; light/dark colors are the tokens at the top
 assets/js/site.js          the four research figures, publication filters, thumbnail motion
 assets/js/portrait-data.js 64×64 grayscale portrait, the hidden ground truth for Fig. 4 (loaded only when needed)
 assets/fonts/              Newsreader (headings), subset and self-hosted, with its license
-assets/img, assets/video   optimized WebP/MP4 copies of ../static
-tools/make_assets.py       regenerates assets/img, assets/video, portrait-data.js from ../static
+assets/img, assets/video   optimized WebP/MP4 images and video
+tools/make_assets.py       regenerates assets/img, assets/video and portrait-data.js
+simit/, efficient_test_time_scaling/   project pages
+old/                       the previous version of this site (index.html + static/), kept as an archive
 ```
 
 ## Adding a paper
 
-Copy one `<li class="pub">` block in `index.html` and set its `data-topics` (any of `self`, `tts`, `gen`, `pr`); the filter counts update automatically. For the thumbnail, put the figure in `../static/images/`, add its name to `singles` in `tools/make_assets.py`, and run `python3 v2/tools/make_assets.py` from the repository root.
+Copy one `<li class="pub">` block in `index.html` and set its `data-topics` (any of `self`, `tts`, `gen`, `pr`); the filter counts update automatically. For the thumbnail, put the figure in `old/static/images/`, add its name to `singles` in `tools/make_assets.py`, and run `python3 tools/make_assets.py` from the repository root. The thumbnail link (`<a class="pub-media" href="…">`) should point to the same place as the title.
 
-Thumbnails lift slightly on hover. To make one cycle through extra frames, give its `<div class="pub-media">` a `data-frames` list of `[image, ""]` pairs (they load only on first hover); a `<video class="hover-video">` plays instead.
-
-## Promoting it to the main page
-
-Move the contents of `v2/` to the repository root (replacing `index.html`; `assets/` does not clash with `static/`). Then replace `/v2/assets/` with `/assets/` in the three absolute URLs in the `<head>` (`og:image`, `twitter:image`, and the JSON-LD `image`). The canonical URL already points at the root.
+Thumbnails zoom in slightly on hover. To make one cycle through extra frames, give it a `data-frames` list of `[image, ""]` pairs (they load only on first hover); a `<video class="hover-video">` plays instead.
 
 ## Notes
 

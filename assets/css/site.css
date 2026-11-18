@@ -149,12 +149,18 @@ h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(2.3rem, 1.8re
 .hero-meta a { color: var(--ink-2); }
 .hero-meta a:hover { color: var(--accent); }
 .badges { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.badge { display: inline-flex; align-items: center; gap: 9px; padding: 6px 13px 6px 11px; border-radius: 999px; font-size: 0.88rem; font-weight: 600; line-height: 1.35; }
+.badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 13px 6px 11px; border-radius: 999px; font-size: 0.88rem; font-weight: 600; line-height: 1.35; }
 .badge-good { background: var(--good-soft); color: var(--good); }
 .badge-accent { background: var(--accent-soft); color: var(--accent); }
-.dot { position: relative; width: 8px; height: 8px; flex: none; border-radius: 50%; background: currentColor; }
-.badge .dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: currentColor; animation: pulse 2.2s ease-out infinite; }
-@keyframes pulse { from { transform: scale(1); opacity: 0.55; } to { transform: scale(2.8); opacity: 0; } }
+/* A soft ring pulses behind each badge icon ("available now"); the two alternate. Off with reduced motion. */
+.badge-icon { position: relative; display: inline-grid; place-items: center; width: 16px; height: 16px; flex: none; }
+.badge-icon .i { position: relative; width: 16px; height: 16px; }
+.badge-icon::before {
+  content: ""; position: absolute; inset: -3px; border-radius: 50%; background: currentColor; opacity: 0;
+  animation: badge-pulse 2.4s ease-out infinite;
+}
+.badge-accent .badge-icon::before { animation-delay: 1.2s; }
+@keyframes badge-pulse { 0% { transform: scale(0.55); opacity: 0.32; } 75%, 100% { transform: scale(1.4); opacity: 0; } }
 .actions { display: grid; gap: 8px; }
 .actions .btn-primary { justify-content: center; }
 .actions-row { display: flex; align-items: center; gap: 2px; }
@@ -287,22 +293,21 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.85rem, 1.55
 .pub:first-child { border-top: 0; padding-top: 0; }
 .pub.is-flash { animation: flash 1.8s ease; }
 @keyframes flash { 0%, 30% { background: var(--accent-soft); box-shadow: 0 0 0 14px var(--accent-soft); } 100% { background: transparent; box-shadow: 0 0 0 14px transparent; } }
-.pub-media { position: relative; aspect-ratio: 3 / 2; align-self: start; overflow: hidden; border-radius: 10px; background: var(--thumb); box-shadow: var(--paper-shadow); }
+.pub-media { display: block; position: relative; aspect-ratio: 3 / 2; align-self: start; overflow: hidden; border-radius: 10px; background: var(--thumb); box-shadow: var(--paper-shadow); }
 .pub-media > img, .pub-media > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 6px; }
 .pub-media > video { padding: 0; }
-/* Thumbnails tilt gently toward the pointer with a soft glare; multi-frame ones also cycle (frames load on first hover) */
-.pub-media {
-  transform: perspective(700px) rotateX(calc(var(--ry, 0) * -8deg)) rotateY(calc(var(--rx, 0) * 8deg));
-  transition: transform 0.45s ease, box-shadow 0.3s ease;
+/* Card hover (or keyboard focus): the figure zooms in slightly inside its frame, an accent ring appears,
+   and the title turns accent. Multi-frame thumbnails also cycle (frames load on first hover). */
+.pub-media { transition: box-shadow 0.3s ease; }
+.pub-media > img, .pub-media > video { transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.35s ease; }
+.pub:focus-within .pub-media { box-shadow: 0 0 0 1.5px var(--accent); }
+.pub:focus-within .pub-media > img, .pub:focus-within .pub-media > video { transform: scale(1.04); }
+@media (hover: hover) {
+  .pub:hover .pub-media { box-shadow: 0 0 0 1.5px var(--accent); }
+  .pub:hover .pub-media > img, .pub:hover .pub-media > video { transform: scale(1.04); }
+  .pub:hover .pub-title a { color: var(--accent); }
 }
-.pub-media.is-tilt { transition: transform 0.1s linear, box-shadow 0.3s ease; box-shadow: 0 10px 24px rgba(20, 20, 30, 0.14), var(--paper-shadow); }
-.pub-media::after {
-  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity 0.3s ease;
-  background: radial-gradient(circle at calc(50% + var(--rx, 0) * 100%) calc(50% + var(--ry, 0) * 100%), rgba(255, 255, 255, 0.38), transparent 60%);
-}
-.pub-media.is-tilt::after { opacity: 1; }
-.pub-media[data-frames] { cursor: pointer; }
-.pub-media.is-ready > img { opacity: 0; transition: opacity 0.35s ease; }
+.pub-media.is-ready > img { opacity: 0; }
 .pub-media.is-ready > img.is-active { opacity: 1; }
 .pub-venue { display: flex; flex-wrap: wrap; gap: 6px; }
 .venue { padding: 5px 8px; border: 1px solid var(--rule-strong); border-radius: 6px; font: 600 0.74rem/1 var(--sans); letter-spacing: 0.01em; color: var(--ink-2); }
@@ -323,6 +328,15 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.85rem, 1.55
 }
 .pill .i { width: 14px; height: 14px; }
 .pill:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+/* ---------- Background (timeline) ---------- */
+.timeline { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 16px; }
+.tl { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 16px; }
+.tl-when { padding-top: 2px; font: 500 0.82rem/1.6 var(--mono); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.tl-what { font-weight: 600; color: var(--ink); }
+.tl-what span { font-weight: 400; color: var(--ink-3); }
+.tl-what span a { color: inherit; }
+.tl-detail { margin-top: 2px; max-width: 72ch; font-size: 0.94rem; color: var(--ink-2); }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 859px) {
@@ -348,6 +362,7 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.85rem, 1.55
   .actions-row .icon-link { width: 36px; height: 36px; }
 }
 @media (max-width: 640px) {
+  .tl { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .pub { grid-template-columns: 104px minmax(0, 1fr); gap: 16px; padding-block: 24px; }
   .pub-media { aspect-ratio: 1; }
   .pub-media > img { padding: 3px; }
@@ -361,7 +376,7 @@ h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.85rem, 1.55
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; transition-delay: 0ms !important; }
 }
 @media print {
-  .skip, .js-only, .actions, .dot { display: none !important; }
+  .skip, .js-only, .actions { display: none !important; }
   body { background: #fff; color: #000; }
   .section { border: 0; padding-block: 24px; }
   .pub { break-inside: avoid; }

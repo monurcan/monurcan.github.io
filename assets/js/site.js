@@ -108,7 +108,6 @@
       var card = box.closest('.pub');
       card.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') play(); });
       card.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') stop(); });
-      box.addEventListener('click', function () { build(); if (!timer) next(); }); // touch: tap to step
     });
     $$('.hover-video').forEach(function (v) {
       var card = v.closest('.pub'), playing = false;
@@ -116,27 +115,6 @@
       var stop = function () { playing = false; v.pause(); };
       card.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && !reduceMotion) play(); });
       card.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') stop(); });
-      v.parentElement.addEventListener('click', function () { if (playing) stop(); else play(); });
-    });
-    // Every thumbnail tilts gently toward the pointer, with a soft glare (mouse only, never with reduced motion)
-    if (reduceMotion || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    $$('.pub-media').forEach(function (m) {
-      var raf = 0;
-      m.addEventListener('pointermove', function (e) {
-        var r = m.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(function () {
-          m.style.setProperty('--rx', x.toFixed(3));
-          m.style.setProperty('--ry', y.toFixed(3));
-          m.classList.add('is-tilt');
-        });
-      });
-      m.addEventListener('pointerleave', function () {
-        cancelAnimationFrame(raf);
-        m.classList.remove('is-tilt');
-        m.style.removeProperty('--rx');
-        m.style.removeProperty('--ry');
-      });
     });
   })();
 

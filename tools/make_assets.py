@@ -1,8 +1,8 @@
-"""Regenerate the optimized images in v2/assets/ from ../static/.
+"""Regenerate the optimized images in assets/ from old/static/ (the previous site's originals).
 
 Run from the repository root:
 
-    python3 v2/tools/make_assets.py
+    python3 tools/make_assets.py
 
 Needs Pillow and (for the POEM clip and frames) ffmpeg. Outputs WebP thumbnails,
 the cropped portrait, the 64x64 grayscale target for the in-browser phase retrieval
@@ -17,9 +17,9 @@ import subprocess
 
 from PIL import Image
 
-ROOT = pathlib.Path(__file__).resolve().parents[2]
-SRC = ROOT / "static"
-OUT = ROOT / "v2" / "assets"
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+SRC = ROOT / "old" / "static"
+OUT = ROOT / "assets"
 IMG = OUT / "img"
 IMG.mkdir(parents=True, exist_ok=True)
 (OUT / "js").mkdir(parents=True, exist_ok=True)
@@ -100,7 +100,7 @@ if shutil.which("ffmpeg"):
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-sseof", "-0.1", "-i", str(mp4), "-frames:v", "1", str(last)], check=True)
     frame = Image.open(last).convert("RGB")
     f = frame.width / 960
-    for name, box in (("before", (22, 121, 222, 322)), ("after", (752, 179, 952, 379))):
+    for name, box in (("before", (25, 124, 219, 319)), ("after", (755, 182, 949, 376))):  # inset past the frame borders
         webp(frame.crop(tuple(int(v * f) for v in box)), IMG / f"poem-{name}.webp", width=420, quality=82)
     last.unlink()
 
